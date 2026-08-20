@@ -309,11 +309,66 @@
             from { transform: translateX(0); }
             to { transform: translateX(-100%); }
         }
+        @keyframes infinite-scroll-rev {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
         .animate-infinite-scroll {
             animation: infinite-scroll 30s linear infinite;
         }
+        /* segunda faixa corre no sentido oposto */
+        .animate-infinite-scroll.reverse {
+            animation-name: infinite-scroll-rev;
+        }
+        /* velocidades: mais itens = duracao maior, para o ritmo parecer o mesmo */
+        .speed-clientes  { animation-duration: 58s; }
+        .speed-parceiros { animation-duration: 45s; }
         .pause-on-hover:hover .animate-infinite-scroll {
             animation-play-state: paused;
+        }
+
+        /* trilho do carrossel, com fade nas duas bordas */
+        .marquee {
+            width: 100%;
+            display: inline-flex;
+            flex-wrap: nowrap;
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(to right, transparent 0, #000 128px, #000 calc(100% - 128px), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, #000 128px, #000 calc(100% - 128px), transparent 100%);
+        }
+        .marquee ul {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        .marquee li {
+            margin-left: 2rem;
+            margin-right: 2rem;
+        }
+        .marquee-clientes span {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: rgba(156, 163, 175, 0.85);
+            transition: color 0.3s ease;
+        }
+        .marquee-parceiros span {
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgba(163, 163, 163, 0.85);
+            transition: color 0.3s ease;
+        }
+        .marquee:hover span { color: #4b5563; }
+        @media (min-width: 768px) {
+            .marquee li { margin-left: 3.5rem; margin-right: 3.5rem; }
+            .marquee-clientes span  { font-size: 1.5rem; }
+            .marquee-parceiros span { font-size: 1.125rem; }
+        }
+
+        /* respeita quem pediu menos movimento no sistema */
+        @media (prefers-reduced-motion: reduce) {
+            .animate-infinite-scroll { animation: none; }
+            .marquee { justify-content: center; flex-wrap: wrap; }
         }
 
         /* ===== CHECKLIST ANIMATION ===== */
@@ -557,32 +612,93 @@
 
     <div class="section-divider max-w-4xl mx-auto"></div>
 
-    <!-- Social Proof (Clientes) -->
+    <!-- Social Proof: Clientes + Parceiros -->
     <section class="py-16 overflow-hidden bg-white/30">
-        <div class="max-w-7xl mx-auto px-4 text-center mb-10">
-            <p class="reveal text-sm font-bold text-brand-black uppercase tracking-[0.3em]">Grandes marcas confiam na nossa gestão</p>
+
+        <!-- ===== CLIENTES ===== -->
+        <div class="max-w-7xl mx-auto px-4 text-center mb-8">
+            <p class="reveal text-xs md:text-sm font-bold text-brand-black uppercase tracking-[0.2em] md:tracking-[0.3em]">Mão de Obra Alocada</p>
+            <p class="reveal delay-100 mt-3 text-sm text-gray-500">Em Grandes clientes e marcas confiam na nossa gestão</p>
         </div>
 
-        <div class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)] pause-on-hover">
-            <ul class="flex items-center justify-center md:justify-start [&_li]:mx-14 [&_span]:text-xl [&_span]:md:text-2xl [&_span]:font-bold [&_span]:text-gray-400/80 whitespace-nowrap animate-infinite-scroll hover:[&_span]:text-gray-600 transition-colors">
-                <li><span>NATURA CO.</span></li>
-                <li><span>MERCADO LIVRE</span></li>
-                <li><span>SEMP-TCL</span></li>
-                <li><span>ON TIME EXPRESS</span></li>
-                <li><span>FLASH BENEFÍCIOS</span></li>
-                <li><span>PORTO SEGURO</span></li>
-                <li><span>SECULLUM</span></li>
-            </ul>
-            <ul class="flex items-center justify-center md:justify-start [&_li]:mx-14 [&_span]:text-xl [&_span]:md:text-2xl [&_span]:font-bold [&_span]:text-gray-400/80 whitespace-nowrap animate-infinite-scroll hover:[&_span]:text-gray-600 transition-colors" aria-hidden="true">
-                <li><span>NATURA CO.</span></li>
-                <li><span>MERCADO LIVRE</span></li>
-                <li><span>SEMP-TCL</span></li>
-                <li><span>ON TIME EXPRESS</span></li>
-                <li><span>FLASH BENEFÍCIOS</span></li>
-                <li><span>PORTO SEGURO</span></li>
-                <li><span>SECULLUM</span></li>
-            </ul>
+            <div class="marquee marquee-clientes pause-on-hover">
+                <ul class="animate-infinite-scroll speed-clientes">
+                    <li><span>ON TIME EXPRESS</span></li>
+                    <li><span>NATURA CO.</span></li>
+                    <li><span>SEMP-TCL</span></li>
+                    <li><span>MERCADO LIVRE</span></li>
+                    <li><span>ENTRE OUTROS!</span></li>
+                    <li><span>ON TIME EXPRESS</span></li>
+                    <li><span>NATURA CO.</span></li>
+                    <li><span>SEMP-TCL</span></li>
+                    <li><span>MERCADO LIVRE</span></li>
+                    <li><span>ENTRE OUTROS!</span></li>
+                    <li><span>ON TIME EXPRESS</span></li>
+                    <li><span>NATURA CO.</span></li>
+                    <li><span>SEMP-TCL</span></li>
+                    <li><span>MERCADO LIVRE</span></li>
+                    <li><span>ENTRE OUTROS!</span></li>
+                </ul>
+                <ul class="animate-infinite-scroll speed-clientes" aria-hidden="true">
+                    <li><span>ON TIME EXPRESS</span></li>
+                    <li><span>NATURA CO.</span></li>
+                    <li><span>SEMP-TCL</span></li>
+                    <li><span>MERCADO LIVRE</span></li>
+                    <li><span>ENTRE OUTROS!</span></li>
+                    <li><span>ON TIME EXPRESS</span></li>
+                    <li><span>NATURA CO.</span></li>
+                    <li><span>SEMP-TCL</span></li>
+                    <li><span>MERCADO LIVRE</span></li>
+                    <li><span>ENTRE OUTROS!</span></li>
+                    <li><span>ON TIME EXPRESS</span></li>
+                    <li><span>NATURA CO.</span></li>
+                    <li><span>SEMP-TCL</span></li>
+                    <li><span>MERCADO LIVRE</span></li>
+                    <li><span>ENTRE OUTROS!</span></li>
+                </ul>
+            </div>
+
+        <div class="section-divider max-w-2xl mx-auto my-14"></div>
+
+        <!-- ===== PARCEIROS &amp; FORNECEDORES ===== -->
+        <div class="max-w-7xl mx-auto px-4 text-center mb-8">
+            <p class="reveal text-xs md:text-sm font-bold text-brand-black uppercase tracking-[0.2em] md:tracking-[0.3em]">Parceiros &amp; Fornecedores</p>
+            <p class="reveal delay-100 mt-3 text-sm text-gray-500">O ecossistema que sustenta a nossa operação</p>
         </div>
+
+            <div class="marquee marquee-parceiros pause-on-hover">
+                <ul class="animate-infinite-scroll reverse speed-parceiros">
+                    <li><span>Flash Benefícios</span></li>
+                    <li><span>Porto Seguro</span></li>
+                    <li><span>Secullum</span></li>
+                    <li><span>Agilize</span></li>
+                    <li><span>PandaPé</span></li>
+                    <li><span>LinkedIn</span></li>
+                    <li><span>Contabilidade | RV Balance Contabil Solution</span></li>
+                    <li><span>TechFin Consult More</span></li>
+                    <li><span>InfoJobs</span></li>
+                    <li><span>Lincoln &amp; Caetano Advogados</span></li>
+                    <li><span>Headhunters especializados</span></li>
+                    <li><span>Banco de Talentos PROA</span></li>
+                    <li><span>Entre outros!</span></li>
+                </ul>
+                <ul class="animate-infinite-scroll reverse speed-parceiros" aria-hidden="true">
+                    <li><span>Flash Benefícios</span></li>
+                    <li><span>Porto Seguro</span></li>
+                    <li><span>Secullum</span></li>
+                    <li><span>Agilize</span></li>
+                    <li><span>PandaPé</span></li>
+                    <li><span>LinkedIn</span></li>
+                    <li><span>RV Balance Contabil Solution</span></li>
+                    <li><span>TechFin Consult More</span></li>
+                    <li><span>InfoJobs</span></li>
+                    <li><span>Lincoln &amp; Caetano Advogados</span></li>
+                    <li><span>Headhunters especializados</span></li>
+                    <li><span>Banco de Talentos PROA</span></li>
+                    <li><span>Entre outros!</span></li>
+                </ul>
+            </div>
+
     </section>
 
     <div class="section-divider max-w-4xl mx-auto"></div>
