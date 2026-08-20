@@ -304,27 +304,37 @@
             left: 0;
         }
 
-        /* ===== INFINITE SCROLL ===== */
+        /* ===== INFINITE SCROLL =====
+           translate3d (e nao translateX) forca a animacao para a GPU: sem isso o
+           Safari do iPhone descarta a animacao em elementos muito largos. */
         @keyframes infinite-scroll {
-            from { transform: translateX(0); }
-            to { transform: translateX(-100%); }
+            from { transform: translate3d(0, 0, 0); }
+            to   { transform: translate3d(-100%, 0, 0); }
         }
         @keyframes infinite-scroll-rev {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(0); }
+            from { transform: translate3d(-100%, 0, 0); }
+            to   { transform: translate3d(0, 0, 0); }
         }
         .animate-infinite-scroll {
             animation: infinite-scroll 30s linear infinite;
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
         /* segunda faixa corre no sentido oposto */
         .animate-infinite-scroll.reverse {
             animation-name: infinite-scroll-rev;
         }
         /* velocidades: mais itens = duracao maior, para o ritmo parecer o mesmo */
-        .speed-clientes  { animation-duration: 58s; }
+        .speed-clientes  { animation-duration: 39s; }
         .speed-parceiros { animation-duration: 45s; }
-        .pause-on-hover:hover .animate-infinite-scroll {
-            animation-play-state: paused;
+
+        /* Pausar no hover SO em quem tem mouse de verdade.
+           No celular o :hover "gruda" apos um toque e congela a faixa para sempre. */
+        @media (hover: hover) and (pointer: fine) {
+            .pause-on-hover:hover .animate-infinite-scroll {
+                animation-play-state: paused;
+            }
         }
 
         /* trilho do carrossel, com fade nas duas bordas */
@@ -365,10 +375,17 @@
             .marquee-parceiros span { font-size: 1.125rem; }
         }
 
-        /* respeita quem pediu menos movimento no sistema */
+        /* Respeita quem ligou "Reduzir movimento" no sistema: em vez de animar,
+           a faixa vira uma lista que da para arrastar com o dedo. */
         @media (prefers-reduced-motion: reduce) {
             .animate-infinite-scroll { animation: none; }
-            .marquee { justify-content: center; flex-wrap: wrap; }
+            .marquee {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .marquee::-webkit-scrollbar { display: none; }
+            .marquee ul[aria-hidden="true"] { display: none; }
         }
 
         /* ===== CHECKLIST ANIMATION ===== */
@@ -617,8 +634,8 @@
 
         <!-- ===== CLIENTES ===== -->
         <div class="max-w-7xl mx-auto px-4 text-center mb-8">
-            <p class="reveal text-xs md:text-sm font-bold text-brand-black uppercase tracking-[0.2em] md:tracking-[0.3em]">TIME ALOCADO</p>
-            <p class="reveal delay-100 mt-3 text-sm text-gray-500">Em Grandes clientes e marcas que confiam em nossa gestão</p>
+            <p class="reveal text-xs md:text-sm font-bold text-brand-black uppercase tracking-[0.2em] md:tracking-[0.3em]">Mão de Obra Alocada</p>
+            <p class="reveal delay-100 mt-3 text-sm text-gray-500">Em Grandes clientes e marcas confiam na nossa gestão</p>
         </div>
 
             <div class="marquee marquee-clientes pause-on-hover">
@@ -633,18 +650,8 @@
                     <li><span>SEMP-TCL</span></li>
                     <li><span>MERCADO LIVRE</span></li>
                     <li><span>ENTRE OUTROS!</span></li>
-                    <li><span>ON TIME EXPRESS</span></li>
-                    <li><span>NATURA CO.</span></li>
-                    <li><span>SEMP-TCL</span></li>
-                    <li><span>MERCADO LIVRE</span></li>
-                    <li><span>ENTRE OUTROS!</span></li>
                 </ul>
                 <ul class="animate-infinite-scroll speed-clientes" aria-hidden="true">
-                    <li><span>ON TIME EXPRESS</span></li>
-                    <li><span>NATURA CO.</span></li>
-                    <li><span>SEMP-TCL</span></li>
-                    <li><span>MERCADO LIVRE</span></li>
-                    <li><span>ENTRE OUTROS!</span></li>
                     <li><span>ON TIME EXPRESS</span></li>
                     <li><span>NATURA CO.</span></li>
                     <li><span>SEMP-TCL</span></li>
